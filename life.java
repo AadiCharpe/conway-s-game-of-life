@@ -24,8 +24,33 @@ class lifeFrame extends JFrame {
         setSize(600, 800);
 
         lifePanel panel = new lifePanel();
-
         getContentPane().add(panel);
+
+        JButton start = new JButton("Start");
+        start.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(start.getText().equals("Start")) {
+                    panel.setTimer(1);
+                    start.setText("Stop");
+                } else {
+                    panel.setTimer(2);
+                    start.setText("Start");
+                }
+            }
+        });
+
+        JButton step = new JButton("Step");
+        step.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                panel.setTimer(0);
+            }
+        });
+
+        JPanel ui = new JPanel();
+        ui.add(start);
+        ui.add(step);
+
+        getContentPane().add(ui, "South");
     }
 }
 
@@ -45,7 +70,17 @@ class lifePanel extends JPanel {
                 repaint();
             }
         });
-        timer.start();
+    }
+
+    public void setTimer(int i) {
+        if(i == 0) {
+            nextGeneration();
+            repaint();
+        } else if(i == 1) {
+            timer.start();
+        } else {
+            timer.stop();
+        }
     }
 
     public void paintComponent(Graphics g) {
