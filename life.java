@@ -13,6 +13,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
 
 public class life {
     public static void main(String[] args) {
@@ -25,7 +27,8 @@ class lifeFrame extends JFrame {
     public lifeFrame() {
         setDefaultCloseOperation(3);
         setTitle("Conway's Game of Life");
-        setSize(600, 800);
+        setSize(600, 675);
+        setLocationRelativeTo(null);
 
         lifePanel panel = new lifePanel();
         getContentPane().add(panel);
@@ -70,18 +73,23 @@ class lifeFrame extends JFrame {
 
 class lifePanel extends JPanel {
     private boolean[][] cells;
+    private boolean running = false;
     private Timer timer;
     public lifePanel() {
         cells  = new boolean[20][20];
-        cells[0][1] = true;
-        cells[1][2] = true;
-        cells[2][0] = true;
-        cells[2][1] = true;
-        cells[2][2] = true;
         timer = new Timer(250, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 nextGeneration();
                 repaint();
+            }
+        });
+
+        addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if(!running) {
+                    cells[(int) Math.floor(e.getY() / 30)][(int) Math.floor(e.getX() / 30)] = cells[(int) Math.floor(e.getY() / 30)][(int) Math.floor(e.getX() / 30)] ? false : true;
+                    repaint();
+                }
             }
         });
     }
@@ -92,8 +100,10 @@ class lifePanel extends JPanel {
             repaint();
         } else if(i == 1) {
             timer.start();
+            running = true;
         } else {
             timer.stop();
+            running = false;
         }
     }
 
