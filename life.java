@@ -1,7 +1,11 @@
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.JButton;
+import javax.swing.JSlider;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -46,9 +50,19 @@ class lifeFrame extends JFrame {
             }
         });
 
+        JSlider delay = new JSlider(100, 1000);
+        delay.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                panel.setDelay(delay.getValue());
+            }
+        });
+        panel.setDelay(delay.getValue());
+
         JPanel ui = new JPanel();
         ui.add(start);
         ui.add(step);
+        ui.add(new JLabel("Speed:"));
+        ui.add(delay);
 
         getContentPane().add(ui, "South");
     }
@@ -81,6 +95,10 @@ class lifePanel extends JPanel {
         } else {
             timer.stop();
         }
+    }
+
+    public void setDelay(int delay) {
+        timer.setDelay(delay);
     }
 
     public void paintComponent(Graphics g) {
