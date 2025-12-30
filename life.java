@@ -9,6 +9,7 @@ import javax.swing.JSlider;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Color;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.event.ActionEvent;
@@ -117,11 +118,16 @@ class lifePanel extends JPanel {
         
         for(int i = 0; i < cells.length; i++) {
             for(int j = 0; j < cells[0].length; j++) {
+                Color color;
                 if(cells[i][j])
-                    g2.setPaint(java.awt.Color.WHITE);
+                    color = Color.WHITE;
                 else
-                    g2.setPaint(java.awt.Color.DARK_GRAY);
+                    color = Color.DARK_GRAY;
+                g2.setPaint(color);
                 g2.fill(new Rectangle2D.Double(j * 30, i * 30, 30, 30));
+                
+                g2.setPaint(color.darker());
+                g2.draw(new Rectangle2D.Double(j * 30, i * 30, 30, 30));
             }
         }
     }
